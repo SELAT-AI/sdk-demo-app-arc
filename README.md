@@ -4,7 +4,7 @@ A consumer-facing SELAT Router SDK demo that builds an ETH market brief across
 paid API rails, funded from a **Circle Gateway balance on Arc mainnet** and
 signed in-process with a **private key**.
 
-This is the private-key counterpart to [`eth-market-brief`](../eth-market-brief).
+This is the private-key counterpart to [`eth-market-brief`](https://github.com/SELAT-AI/sdk-demo-apps/tree/main/eth-market-brief).
 It signs every Gateway-batched payment locally with `createViemSigner`, so it
 needs **no Circle CLI and no signing service** and deploys to Vercel as-is.
 
