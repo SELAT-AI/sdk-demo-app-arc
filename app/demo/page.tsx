@@ -5,8 +5,8 @@ import { ThemeToggle } from "../components/ThemeToggle";
 import { DemoConsole } from "./DemoConsole";
 
 export const metadata = {
-  title: "SDK Demo",
-  description: "A small SELAT Router SDK demo for routing catalogue endpoints through paid rails."
+  title: "ETH Market Brief",
+  description: "An ETH market brief workflow routed through paid API rails."
 };
 
 export default function DemoPage() {
@@ -18,9 +18,6 @@ export default function DemoPage() {
           <Link href="/demo" className="brand" aria-label="ETH Market Brief demo">
             <Logo />
           </Link>
-          <nav>
-            <Link href="/demo">SDK Demo</Link>
-          </nav>
           <ThemeToggle />
         </header>
 
