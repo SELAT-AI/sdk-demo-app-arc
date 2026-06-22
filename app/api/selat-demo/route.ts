@@ -40,9 +40,31 @@ type DemoClientResult =
 function createDemoClient(): DemoClientResult {
   const chain = getChain();
   const routerUrl = process.env.SELAT_ROUTER_URL;
-  const privateKey = process.env.X402_CLIENT_PRIVATE_KEY as `0x${string}` | undefined;
+  const rawKey = process.env.X402_CLIENT_PRIVATE_KEY?.trim();
 
-  if (privateKey) {
+  if (!rawKey) {
+    return {
+      client: null,
+      setup:
+        "Set X402_CLIENT_PRIVATE_KEY to the Arc Gateway depositor wallet's private key to run the demo."
+    };
+  }
+
+  // Tolerate a key pasted without the 0x prefix, and validate the shape before
+  // handing it to viem — otherwise an invalid key throws here (outside the POST
+  // handler's try/catch) and the function returns an empty body, which the
+  // browser surfaces as "Unexpected end of JSON input".
+  const privateKey = (rawKey.startsWith("0x") ? rawKey : `0x${rawKey}`) as `0x${string}`;
+
+  if (!/^0x[0-9a-fA-F]{64}$/.test(privateKey)) {
+    return {
+      client: null,
+      setup:
+        "X402_CLIENT_PRIVATE_KEY is set but is not a valid private key — it must be 64 hex characters (32 bytes), optionally 0x-prefixed."
+    };
+  }
+
+  try {
     return {
       client: new RouterClient({
         chain,
@@ -50,13 +72,12 @@ function createDemoClient(): DemoClientResult {
         signer: createViemSigner(privateKey)
       })
     };
+  } catch (error) {
+    return {
+      client: null,
+      setup: `Could not initialize the private-key signer: ${error instanceof Error ? error.message : String(error)}`
+    };
   }
-
-  return {
-    client: null,
-    setup:
-      "Set X402_CLIENT_PRIVATE_KEY to the Arc Gateway depositor wallet's private key to run the demo."
-  };
 }
 
 function mergeRequestOptions(endpointOptions: RouterFetchOptions, body: DemoRequestBody): RouterFetchOptions {
