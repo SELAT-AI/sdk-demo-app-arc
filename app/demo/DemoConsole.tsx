@@ -310,7 +310,7 @@ export function DemoConsole({ endpoints }: DemoConsoleProps) {
           endpointId: deliveryEndpoint.id,
           body: JSON.stringify(
             {
-              to: recipientEmail,
+              to: [recipientEmail.trim()],
               subject: "ETH market brief",
               text: briefText
             },

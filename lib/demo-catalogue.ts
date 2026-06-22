@@ -105,7 +105,7 @@ export const demoEndpoints: DemoEndpoint[] = [
     },
     body: JSON.stringify(
       {
-        to: "analyst@example.com",
+        to: ["analyst@example.com"],
         subject: "ETH market brief",
         text: "SELAT routed the research, quote, and smart-money flow checks. Replace this with the generated brief."
       },
